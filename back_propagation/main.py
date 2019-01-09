@@ -95,12 +95,12 @@ class Nure():
 P = array([linspace(-10, 10, 10)]).T
 T = random.rand(10,1)
 #NN = Nure(minmax(P), array([[3,1]]), array([[tansig, purelin]]), traingdm)
-NN = Nure(minmax(P), array([[4,1]]))
-NN.train_num = 30000;
-NN.learn_speed = 0.198
+NN = Nure(minmax(P), array([[20,1]]))
+NN.train_num = 50000;
+NN.learn_speed = 0.7
 NN.train(P, T)
 
-P_test = array([linspace(-10, 10, 40)]).T
+P_test = array([linspace(-10, 10, 100)]).T
 Y_test = NN.think(P_test)
 # »æÖÆ²âÊÔÊı¾İ
 plt.plot(P_test.T[0], Y_test.T[0])
