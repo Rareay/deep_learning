@@ -67,7 +67,7 @@ def creat_center(data, num):
     #print("全部样本：")
     #print(X)
 
-    # 把前面几个样本作为样本中心，这只是样本中心的初始值，后面还会更改 
+    # 随机初始化样本中心，即从样本中随机选取num个作为初始样本中心 
     temp = random.sample(range(X.shape[1]), num)
     for i in range(num):
         if i == 0:
@@ -190,8 +190,9 @@ test_num = 1
 if test_num == 1:
     ####################### 测试1 ##########################
     P = array([linspace(100,200,10)])
-    T = 100 * np.random.rand(10, 1)
-    NN = Nure(P, T, 10) # 训练样本、期望输出、隐神经元个数
+    T = np.sin(P / 10).T
+    #T = 100 * np.random.rand(10, 1)
+    NN = Nure(P, T, P.shape[1]) # 训练样本、期望输出、隐神经元个数
     test_data = array([linspace(100,200,100)])
     out = NN.think(test_data)
     plt.plot(test_data[0], out.T[0])
@@ -221,7 +222,7 @@ elif test_num == 2:
     
     #三维图形
     ax = plt.subplot(111, projection='3d')
-    ax.set_title('www.jb51.net - matplotlib Demo');
+    ax.set_title('RBF test');
     ax.plot_surface(x,y,z,rstride=2, cstride=1, cmap=plt.cm.Blues_r)
     #设置坐标轴标签
     ax.set_xlabel('X')
