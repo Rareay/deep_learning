@@ -6,11 +6,12 @@ from numpy import *
 import matplotlib.pyplot as plt
 import random
 import numpy.linalg as lg
+import mpl_toolkits.mplot3d
 
-
-# 欧式范数
-# ||x|| = (|x1|^2 + |x2|^2 + |x3|^2 + ... + |xn|^2)^0.5
 def radbas(data):
+    ''' 欧式范数
+    ||x|| = (|x1|^2 + |x2|^2 + |x3|^2 + ... + |xn|^2)^0.5
+    '''
     X = data
     for i in range(X.shape[0]):
         X[i] = X[i] ** 2
@@ -23,6 +24,19 @@ def radbas(data):
     return Y
 
 def classification(data, centers):
+    ''' 样本分类器
+    计算样本到各个样本中心的距离，根据距离最近原则将其分类到
+    对应的样本中心
+
+    Args:
+        data: 单个输入样本，形状N*1
+        centers: 所有样本中心，形状N*M
+
+    Returns:
+        D: 分类矩阵[[0] 表示分类到第2个样本中心类中 
+                    [1]
+                    [0]]
+    '''
     X = data * 1
     C = centers * 1
     X = X.dot(ones((1,C.shape[1])))
@@ -37,6 +51,15 @@ def classification(data, centers):
         
 
 def creat_center(data, num):
+    ''' 生成聚类中心
+
+    Args: 
+        data: 所有样本，形状 N*M
+        num: 生成的聚类中心个数，num <= M 
+
+    Returns: 
+        C: 聚类中心，形状 N*num 
+    '''
     samples_num = data.shape[1] # 样本数目
     if samples_num < num:
         return None
@@ -86,11 +109,6 @@ def creat_center(data, num):
             C = C_TEMP * 1.0
     #print("最终样本中心：")
     #print(C)
-
-    #plt.scatter(X[0], X[1], color='r')
-    #plt.scatter(C[0], C[1], color='b')
-    #plt.show()
-
     return C
 
 
@@ -99,30 +117,24 @@ class Nure():
     def __init__(self, samples, d_out, cen_num):
         X = samples * 1.0
         D = d_out * 1.0
-        N_I = X.shape[0]
-        N_H = cen_num
-        N_O = D.shape[0]
         print("样本：")
         print(X)
+
         print("期望：")
-        print(D)
-        C =  creat_center(X, N_H)
+        print(D.T)
+
+        C =  creat_center(X, cen_num)
         self.C = C * 1.0
         print("样本中心：")
         print(C)
 
         self.__sigma = self.get_sigma(C)
-        #self.__sigma = 0.50
         print("sigma = ", self.__sigma)
 
         O_H = self.hidden_output(X, C)
         print("O_H:")
         print(O_H)
 
-        D = D.T
-        print("D:")
-        print(D)
-        
         O_H_ = lg.pinv(O_H)
         print("O_H_:")
         print(O_H_)
@@ -132,13 +144,13 @@ class Nure():
         print("W = O_H_ * D")
         print(W)
 
-        O_O = O_H.dot(W)
-        print("D = O_H * W")
-        print(O_O)
-        
-        
     def get_sigma(self, sample_certen):
-        C = sample_certen * 0.1
+        ''' 获取高斯函数的参数sigma
+        sigma = C_max / ((2 * C_num) ** 0.5)
+        其中，C_max为各个样本中心间最大的距离，
+        C_num为样本中心的个数
+        '''
+        C = sample_certen * 1.0
         C_num = C.shape[1]
         C_max = 0
         for i in range(C_num):
@@ -151,41 +163,75 @@ class Nure():
 
 
     def hidden_output(self, sample, sample_certen):
+        ''' 计算隐藏层的输出
+        '''
         X = sample * 1.0
-        C = sample_certen * 0.1
+        C = sample_certen * 1.0
         for i in range(X.shape[1]):
             X_i = array([X[:,i]]).T * 1.0
             X_i = X_i.dot(ones((1,C.shape[1])) * 1.0)
-            D = radbas(X_i - self.C)
-            temp = exp(-1 / (2 * self.__sigma * self.__sigma) * D)
+            D = radbas(X_i - C)
+            temp = np.exp(-1 / (2 * self.__sigma ** 2) * (D ** 2))
             if i == 0:
                 O = temp
             else:
                 O = vstack([O, temp])
         return O
 
-
     def think(self, samples):
+        ''' 计算网络输出，提供给外部使用
+        '''
         X = samples * 1.0
         O_H = self.hidden_output(X, self.C)
         O_O = O_H.dot(self.W)
         return O_O
 
- 
+test_num = 1
+if test_num == 1:
+    ####################### 测试1 ##########################
+    P = array([linspace(100,200,10)])
+    T = 100 * np.random.rand(10, 1)
+    NN = Nure(P, T, 10) # 训练样本、期望输出、隐神经元个数
+    test_data = array([linspace(100,200,100)])
+    out = NN.think(test_data)
+    plt.plot(test_data[0], out.T[0])
+    plt.scatter(P, T, color = 'r')
+    plt.show()
+
+elif test_num == 2:
+    ####################### 测试2 ##########################
+    temp = array([linspace(1,100,10)])
+    temp = ones((temp.shape[1], 1)).dot(temp)
+    temp1 = temp.reshape(temp.shape[1] ** 2)
+    temp2 = temp.T.reshape(temp.shape[1] ** 2)
+    P = vstack([temp2, temp1])
+    T = 10 * np.random.rand(temp.shape[1] ** 2, 1)
+
+    NN = Nure(P, T, temp.shape[1] ** 2)
+    
+    temp = array([linspace(1,100,100)])
+    temp = ones((temp.shape[1], 1)).dot(temp)
+    x = temp
+    y = temp.T
+    temp1 = temp.reshape(temp.shape[1] ** 2)
+    temp2 = temp.T.reshape(temp.shape[1] ** 2)
+    test_data = vstack([temp2, temp1])
+    out = NN.think(test_data)
+    z = out.reshape(temp.shape[1], temp.shape[1])
+    
+    #三维图形
+    ax = plt.subplot(111, projection='3d')
+    ax.set_title('www.jb51.net - matplotlib Demo');
+    ax.plot_surface(x,y,z,rstride=2, cstride=1, cmap=plt.cm.Blues_r)
+    #设置坐标轴标签
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    print(P[0])
+    print(P[1])
+    print(T.T[0])
+    ax.scatter(P[0], P[1], T.T[0], color = 'r')
+    plt.show()
 
 
-
-#P = array([[0,0.2],[1,4.2],[0,1.1],[7,8],[9.1,8],[8.3,9],[9.4,2],[8.2,2],[9,1.2]]).T
-#T = np.random.rand(10, 1)
-#T = array([[2,2],[3,3],[4,4],[2,2],[3,3],[4,4],[2,2],[3,3],[4,4]]).T
-P = array([linspace(100,200,10)])
-T = 100 * np.random.rand(10, 1).T
-#creat_center(a, 3)
-NN = Nure(P, T, 10) # 训练样本、期望输出、隐神经元个数
-
-test = array([linspace(100,200,100)])
-out = NN.think(test)
-plt.plot(test[0], out.T[0])
-plt.scatter(P, T, color = 'r')
-plt.show()
 
