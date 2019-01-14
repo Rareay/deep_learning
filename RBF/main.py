@@ -162,6 +162,60 @@ class Nure():
         return C_max / ((2 * C_num) ** 0.5)
 
 
+    def get_sigma(self, sample_certen):
+        ''' 获取高斯函数的参数sigma
+        sigma = C_max / ((2 * C_num) ** 0.5)
+        其中，C_max为各个样本中心间最大的距离，
+        C_num为样本中心的个数
+        '''
+        C = sample_certen * 1.0
+        C_num = C.shape[1]
+        C_max = 0
+        for i in range(C_num):
+            for j in range(i + 1, C_num):
+                temp = array([C[:,i] - C[:,j]]).T
+                temp = radbas(temp)
+                if C_max < temp:
+                    C_max = temp
+        return C_max / ((2 * C_num) ** 0.5)
+
+
+    def get_sigma(self, sample_certen):
+        ''' 获取高斯函数的参数sigma
+        sigma = C_max / ((2 * C_num) ** 0.5)
+        其中，C_max为各个样本中心间最大的距离，
+        C_num为样本中心的个数
+        '''
+        C = sample_certen * 1.0
+        C_num = C.shape[1]
+        C_max = 0
+        for i in range(C_num):
+            for j in range(i + 1, C_num):
+                temp = array([C[:,i] - C[:,j]]).T
+                temp = radbas(temp)
+                if C_max < temp:
+                    C_max = temp
+        return C_max / ((2 * C_num) ** 0.5)
+
+
+    def get_sigma(self, sample_certen):
+        ''' 获取高斯函数的参数sigma
+        sigma = C_max / ((2 * C_num) ** 0.5)
+        其中，C_max为各个样本中心间最大的距离，
+        C_num为样本中心的个数
+        '''
+        C = sample_certen * 1.0
+        C_num = C.shape[1]
+        C_max = 0
+        for i in range(C_num):
+            for j in range(i + 1, C_num):
+                temp = array([C[:,i] - C[:,j]]).T
+                temp = radbas(temp)
+                if C_max < temp:
+                    C_max = temp
+        return C_max / ((2 * C_num) ** 0.5)
+
+
     def hidden_output(self, sample, sample_certen):
         ''' 计算隐藏层的输出
         '''
@@ -217,6 +271,7 @@ elif test_num == 2:
     temp1 = temp.reshape(temp.shape[1] ** 2)
     temp2 = temp.T.reshape(temp.shape[1] ** 2)
     test_data = vstack([temp2, temp1])
+    print("Wait...")
     out = NN.think(test_data)
     z = out.reshape(temp.shape[1], temp.shape[1])
     
