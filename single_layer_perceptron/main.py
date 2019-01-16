@@ -1,19 +1,19 @@
 #! /usr/bin/python3
-# coding=gbk
+# coding=utf-8
 
 import numpy as np
 from numpy import *
 import matplotlib.pyplot as plt
 
-# µ¥²ã¸ÐÖªÆ÷
+# å•å±‚æ„ŸçŸ¥å™¨
 class NeuralNetwork():
-    train_num = 8000    # ÑµÁ·´ÎÊý
-    learn_speed = 0.1   # Ñ§Ï°ËÙÂÊ
+    train_num = 8000    # è®­ç»ƒæ¬¡æ•°
+    learn_speed = 0.1   # å­¦ä¹ é€ŸçŽ‡
 
     def __init__(self, X_info, neural_num):
-        self.X_num = X_info.shape[0]    # ÊäÈë²ãXµÄ¸öÊý
-        self.neural_num = neural_num    # Éñ¾­ÔªµÄ¸öÊý
-        self.W = 2 * random.random((self.X_num, self.neural_num)) - 1 # Ëæ»ú·ÖÅäÈ¨ÖØ
+        self.X_num = X_info.shape[0]    # è¾“å…¥å±‚Xçš„ä¸ªæ•°
+        self.neural_num = neural_num    # ç¥žç»å…ƒçš„ä¸ªæ•°
+        self.W = 2 * random.random((self.X_num, self.neural_num)) - 1 # éšæœºåˆ†é…æƒé‡
 
     def __hardlim(self, data):
         data[data >= 0] = 1

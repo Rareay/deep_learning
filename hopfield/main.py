@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# coding=gbk
+# coding=utf-8
 
 import numpy as np
 from numpy import *
@@ -19,7 +19,7 @@ class Nure():
         temp2 = eye(X.shape[0]) - 1
         temp2[temp2 < 0] = 1
         self.W = 0.1 * temp1 * temp2
-        print("È¨ÖØ")
+        print("æƒé‡")
         print(self.W)
         return 
    
@@ -41,8 +41,8 @@ temp = Y1
 temp = hstack([temp, Y2])
 temp = hstack([temp, Y3])
 temp = hstack([temp, Y4])
-X = temp # ÑµÁ·Ñù±¾
-print("ÑµÁ·Ñù±¾")
+X = temp # è®­ç»ƒæ ·æœ¬
+print("è®­ç»ƒæ ·æœ¬")
 print(X)
 
 X1 = array([[1,1,1,1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1]]).T
@@ -53,15 +53,15 @@ temp = X1
 temp = hstack([temp, X2])
 temp = hstack([temp, X3])
 temp = hstack([temp, X4])
-test = temp # ²âÊÔÊý¾Ý
-print("²âÊÔÊý¾Ý")
+test = temp # æµ‹è¯•æ•°æ®
+print("æµ‹è¯•æ•°æ®")
 print(test)
 
 NN = Nure(X)
 O = NN.think(X)
-print("²âÊÔ½á¹û")
+print("æµ‹è¯•ç»“æžœ")
 print(O)
 
-print("²âÊÔÎó²î")
+print("æµ‹è¯•è¯¯å·®")
 print(O - X)
 

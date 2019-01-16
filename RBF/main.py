@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# coding=gbk
+# coding=utf-8
 
 import numpy as np
 from numpy import *
@@ -9,7 +9,7 @@ import numpy.linalg as lg
 import mpl_toolkits.mplot3d
 
 def radbas(data):
-    ''' Å·Ê½·¶Êı
+    ''' æ¬§å¼èŒƒæ•°
     ||x|| = (|x1|^2 + |x2|^2 + |x3|^2 + ... + |xn|^2)^0.5
     '''
     X = data
@@ -24,16 +24,16 @@ def radbas(data):
     return Y
 
 def classification(data, centers):
-    ''' Ñù±¾·ÖÀàÆ÷
-    ¼ÆËãÑù±¾µ½¸÷¸öÑù±¾ÖĞĞÄµÄ¾àÀë£¬¸ù¾İ¾àÀë×î½üÔ­Ôò½«Æä·ÖÀàµ½
-    ¶ÔÓ¦µÄÑù±¾ÖĞĞÄ
+    ''' æ ·æœ¬åˆ†ç±»å™¨
+    è®¡ç®—æ ·æœ¬åˆ°å„ä¸ªæ ·æœ¬ä¸­å¿ƒçš„è·ç¦»ï¼Œæ ¹æ®è·ç¦»æœ€è¿‘åŸåˆ™å°†å…¶åˆ†ç±»åˆ°
+    å¯¹åº”çš„æ ·æœ¬ä¸­å¿ƒ
 
     Args:
-        data: µ¥¸öÊäÈëÑù±¾£¬ĞÎ×´N*1
-        centers: ËùÓĞÑù±¾ÖĞĞÄ£¬ĞÎ×´N*M
+        data: å•ä¸ªè¾“å…¥æ ·æœ¬ï¼Œå½¢çŠ¶N*1
+        centers: æ‰€æœ‰æ ·æœ¬ä¸­å¿ƒï¼Œå½¢çŠ¶N*M
 
     Returns:
-        D: ·ÖÀà¾ØÕó[[0] ±íÊ¾·ÖÀàµ½µÚ2¸öÑù±¾ÖĞĞÄÀàÖĞ 
+        D: åˆ†ç±»çŸ©é˜µ[[0] è¡¨ç¤ºåˆ†ç±»åˆ°ç¬¬2ä¸ªæ ·æœ¬ä¸­å¿ƒç±»ä¸­ 
                     [1]
                     [0]]
     '''
@@ -51,23 +51,23 @@ def classification(data, centers):
         
 
 def creat_center(data, num):
-    ''' Éú³É¾ÛÀàÖĞĞÄ
+    ''' ç”Ÿæˆèšç±»ä¸­å¿ƒ
 
     Args: 
-        data: ËùÓĞÑù±¾£¬ĞÎ×´ N*M
-        num: Éú³ÉµÄ¾ÛÀàÖĞĞÄ¸öÊı£¬num <= M 
+        data: æ‰€æœ‰æ ·æœ¬ï¼Œå½¢çŠ¶ N*M
+        num: ç”Ÿæˆçš„èšç±»ä¸­å¿ƒä¸ªæ•°ï¼Œnum <= M 
 
     Returns: 
-        C: ¾ÛÀàÖĞĞÄ£¬ĞÎ×´ N*num 
+        C: èšç±»ä¸­å¿ƒï¼Œå½¢çŠ¶ N*num 
     '''
-    samples_num = data.shape[1] # Ñù±¾ÊıÄ¿
+    samples_num = data.shape[1] # æ ·æœ¬æ•°ç›®
     if samples_num < num:
         return None
     X = data * 1
-    #print("È«²¿Ñù±¾£º")
+    #print("å…¨éƒ¨æ ·æœ¬ï¼š")
     #print(X)
 
-    # Ëæ»ú³õÊ¼»¯Ñù±¾ÖĞĞÄ£¬¼´´ÓÑù±¾ÖĞËæ»úÑ¡È¡num¸ö×÷Îª³õÊ¼Ñù±¾ÖĞĞÄ 
+    # éšæœºåˆå§‹åŒ–æ ·æœ¬ä¸­å¿ƒï¼Œå³ä»æ ·æœ¬ä¸­éšæœºé€‰å–numä¸ªä½œä¸ºåˆå§‹æ ·æœ¬ä¸­å¿ƒ 
     temp = random.sample(range(X.shape[1]), num)
     for i in range(num):
         if i == 0:
@@ -75,18 +75,18 @@ def creat_center(data, num):
         else:
             C = hstack([C, array([X[:,temp[i]]]).T])
     C = C * 1.0
-    #print("³õÊ¼Ñù±¾ÖĞĞÄ£º")
+    #print("åˆå§‹æ ·æœ¬ä¸­å¿ƒï¼š")
     #print(C)
 
     while 1:
-        # ¸ù¾İÅ·Ê½¾àÀë½«ÊäÈëÑù±¾·ÖÀà£¬·ÖÀàĞÅÏ¢´æ·ÅÓÚ¾ØÕóU
+        # æ ¹æ®æ¬§å¼è·ç¦»å°†è¾“å…¥æ ·æœ¬åˆ†ç±»ï¼Œåˆ†ç±»ä¿¡æ¯å­˜æ”¾äºçŸ©é˜µU
         for i in range(samples_num):
             u = classification(array([X[:,i]]).T, C)
             if i == 0:
                 U = u
             else:
                 U = hstack([U, u])
-        #print("·ÖÀà¾ØÕó£º")
+        #print("åˆ†ç±»çŸ©é˜µï¼š")
         #print(U)
                 
         for i in range(num):
@@ -107,7 +107,7 @@ def creat_center(data, num):
             break
         else:
             C = C_TEMP * 1.0
-    #print("×îÖÕÑù±¾ÖĞĞÄ£º")
+    #print("æœ€ç»ˆæ ·æœ¬ä¸­å¿ƒï¼š")
     #print(C)
     return C
 
@@ -117,15 +117,15 @@ class Nure():
     def __init__(self, samples, d_out, cen_num):
         X = samples * 1.0
         D = d_out * 1.0
-        print("Ñù±¾£º")
+        print("æ ·æœ¬ï¼š")
         print(X)
 
-        print("ÆÚÍû£º")
+        print("æœŸæœ›ï¼š")
         print(D.T)
 
         C =  creat_center(X, cen_num)
         self.C = C * 1.0
-        print("Ñù±¾ÖĞĞÄ£º")
+        print("æ ·æœ¬ä¸­å¿ƒï¼š")
         print(C)
 
         self.__sigma = self.get_sigma(C)
@@ -145,10 +145,10 @@ class Nure():
         print(W)
 
     def get_sigma(self, sample_certen):
-        ''' »ñÈ¡¸ßË¹º¯ÊıµÄ²ÎÊısigma
+        ''' è·å–é«˜æ–¯å‡½æ•°çš„å‚æ•°sigma
         sigma = C_max / ((2 * C_num) ** 0.5)
-        ÆäÖĞ£¬C_maxÎª¸÷¸öÑù±¾ÖĞĞÄ¼ä×î´óµÄ¾àÀë£¬
-        C_numÎªÑù±¾ÖĞĞÄµÄ¸öÊı
+        å…¶ä¸­ï¼ŒC_maxä¸ºå„ä¸ªæ ·æœ¬ä¸­å¿ƒé—´æœ€å¤§çš„è·ç¦»ï¼Œ
+        C_numä¸ºæ ·æœ¬ä¸­å¿ƒçš„ä¸ªæ•°
         '''
         C = sample_certen * 1.0
         C_num = C.shape[1]
@@ -163,10 +163,10 @@ class Nure():
 
 
     def get_sigma(self, sample_certen):
-        ''' »ñÈ¡¸ßË¹º¯ÊıµÄ²ÎÊısigma
+        ''' è·å–é«˜æ–¯å‡½æ•°çš„å‚æ•°sigma
         sigma = C_max / ((2 * C_num) ** 0.5)
-        ÆäÖĞ£¬C_maxÎª¸÷¸öÑù±¾ÖĞĞÄ¼ä×î´óµÄ¾àÀë£¬
-        C_numÎªÑù±¾ÖĞĞÄµÄ¸öÊı
+        å…¶ä¸­ï¼ŒC_maxä¸ºå„ä¸ªæ ·æœ¬ä¸­å¿ƒé—´æœ€å¤§çš„è·ç¦»ï¼Œ
+        C_numä¸ºæ ·æœ¬ä¸­å¿ƒçš„ä¸ªæ•°
         '''
         C = sample_certen * 1.0
         C_num = C.shape[1]
@@ -181,10 +181,10 @@ class Nure():
 
 
     def get_sigma(self, sample_certen):
-        ''' »ñÈ¡¸ßË¹º¯ÊıµÄ²ÎÊısigma
+        ''' è·å–é«˜æ–¯å‡½æ•°çš„å‚æ•°sigma
         sigma = C_max / ((2 * C_num) ** 0.5)
-        ÆäÖĞ£¬C_maxÎª¸÷¸öÑù±¾ÖĞĞÄ¼ä×î´óµÄ¾àÀë£¬
-        C_numÎªÑù±¾ÖĞĞÄµÄ¸öÊı
+        å…¶ä¸­ï¼ŒC_maxä¸ºå„ä¸ªæ ·æœ¬ä¸­å¿ƒé—´æœ€å¤§çš„è·ç¦»ï¼Œ
+        C_numä¸ºæ ·æœ¬ä¸­å¿ƒçš„ä¸ªæ•°
         '''
         C = sample_certen * 1.0
         C_num = C.shape[1]
@@ -199,10 +199,10 @@ class Nure():
 
 
     def get_sigma(self, sample_certen):
-        ''' »ñÈ¡¸ßË¹º¯ÊıµÄ²ÎÊısigma
+        ''' è·å–é«˜æ–¯å‡½æ•°çš„å‚æ•°sigma
         sigma = C_max / ((2 * C_num) ** 0.5)
-        ÆäÖĞ£¬C_maxÎª¸÷¸öÑù±¾ÖĞĞÄ¼ä×î´óµÄ¾àÀë£¬
-        C_numÎªÑù±¾ÖĞĞÄµÄ¸öÊı
+        å…¶ä¸­ï¼ŒC_maxä¸ºå„ä¸ªæ ·æœ¬ä¸­å¿ƒé—´æœ€å¤§çš„è·ç¦»ï¼Œ
+        C_numä¸ºæ ·æœ¬ä¸­å¿ƒçš„ä¸ªæ•°
         '''
         C = sample_certen * 1.0
         C_num = C.shape[1]
@@ -217,7 +217,7 @@ class Nure():
 
 
     def hidden_output(self, sample, sample_certen):
-        ''' ¼ÆËãÒş²Ø²ãµÄÊä³ö
+        ''' è®¡ç®—éšè—å±‚çš„è¾“å‡º
         '''
         X = sample * 1.0
         C = sample_certen * 1.0
@@ -233,7 +233,7 @@ class Nure():
         return O
 
     def think(self, samples):
-        ''' ¼ÆËãÍøÂçÊä³ö£¬Ìá¹©¸øÍâ²¿Ê¹ÓÃ
+        ''' è®¡ç®—ç½‘ç»œè¾“å‡ºï¼Œæä¾›ç»™å¤–éƒ¨ä½¿ç”¨
         '''
         X = samples * 1.0
         O_H = self.hidden_output(X, self.C)
@@ -242,11 +242,11 @@ class Nure():
 
 test_num = 1
 if test_num == 1:
-    ####################### ²âÊÔ1 ##########################
+    ####################### æµ‹è¯•1 ##########################
     P = array([linspace(100,200,10)])
     T = np.sin(P / 10).T
     #T = 100 * np.random.rand(10, 1)
-    NN = Nure(P, T, P.shape[1]) # ÑµÁ·Ñù±¾¡¢ÆÚÍûÊä³ö¡¢ÒşÉñ¾­Ôª¸öÊı
+    NN = Nure(P, T, P.shape[1]) # è®­ç»ƒæ ·æœ¬ã€æœŸæœ›è¾“å‡ºã€éšç¥ç»å…ƒä¸ªæ•°
     test_data = array([linspace(100,200,100)])
     out = NN.think(test_data)
     plt.plot(test_data[0], out.T[0])
@@ -254,7 +254,7 @@ if test_num == 1:
     plt.show()
 
 elif test_num == 2:
-    ####################### ²âÊÔ2 ##########################
+    ####################### æµ‹è¯•2 ##########################
     temp = array([linspace(1,100,10)])
     temp = ones((temp.shape[1], 1)).dot(temp)
     temp1 = temp.reshape(temp.shape[1] ** 2)
@@ -275,11 +275,11 @@ elif test_num == 2:
     out = NN.think(test_data)
     z = out.reshape(temp.shape[1], temp.shape[1])
     
-    #ÈıÎ¬Í¼ĞÎ
+    #ä¸‰ç»´å›¾å½¢
     ax = plt.subplot(111, projection='3d')
     ax.set_title('RBF test');
     ax.plot_surface(x,y,z,rstride=2, cstride=1, cmap=plt.cm.Blues_r)
-    #ÉèÖÃ×ø±êÖá±êÇ©
+    #è®¾ç½®åæ ‡è½´æ ‡ç­¾
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# coding=gbk
+# coding=utf-8
 
 import numpy as np
 from numpy import *
@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import random
 
 def radbas(data):
-    ''' Å·Ê½·¶Êı
+    ''' æ¬§å¼èŒƒæ•°
     ||x|| = (|x1|^2 + |x2|^2 + |x3|^2 + ... + |xn|^2)^0.5
     '''
     X = data * 1.0
@@ -23,8 +23,8 @@ def radbas(data):
 
 
 class Nure():
-    ''' ×Ô×éÖ¯Éñ¾­ÍøÂç
-    ÓÃÓÚ·ÖÀà£¬ÀàËÆÓÚRBFÊµÑéÖĞµÄÑ°ÕÒ¾ÛÀàÖĞĞÄ
+    ''' è‡ªç»„ç»‡ç¥ç»ç½‘ç»œ
+    ç”¨äºåˆ†ç±»ï¼Œç±»ä¼¼äºRBFå®éªŒä¸­çš„å¯»æ‰¾èšç±»ä¸­å¿ƒ
     '''
     train_num = 50
     learn_speed = 0.5
@@ -33,7 +33,7 @@ class Nure():
         self.X = samples * 1.0
         X_range = vstack([array([self.X.min(axis = 1)]),array([self.X.max(axis = 1)])]).T
 
-        # Ëæ»ú³õÊ¼»¯Êı¾İÖĞĞÄ
+        # éšæœºåˆå§‹åŒ–æ•°æ®ä¸­å¿ƒ
         for i in range(self.X.shape[0]):
             temp = X_range[i][0] + (X_range[i][1] - X_range[i][0]) * np.random.rand(1, certen_num)
             if i == 0:
@@ -43,6 +43,8 @@ class Nure():
         self.C = C
 
     def find_certen(self):
+        '''å¯»æ‰¾èšç±»ä¸­å¿ƒ
+        '''
         for i in range(self.train_num):
             for j in range(self.X.shape[1]):
                 X_j = array([self.X[:,j]]).T

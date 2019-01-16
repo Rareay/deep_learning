@@ -1,23 +1,23 @@
 #! /usr/bin/python3
-# coding=gbk
+# coding=utf-8
 
 import numpy as np
 from numpy import *
 import matplotlib.pyplot as plt 
 
-# ¼¤»îº¯Êı logsig
+# æ¿€æ´»å‡½æ•° logsig
 def logsig(data):
     return (1 / (1 + np.exp(-data)))
 
-# ¼¤»îº¯Êı tansig
+# æ¿€æ´»å‡½æ•° tansig
 def tansig(data):
     return (2 / (1 + np.exp(-(2 * data))) - 1)
 
-# ¼¤»îº¯Êı purelin
+# æ¿€æ´»å‡½æ•° purelin
 def purelin(data):
     return data
 
-# »ñÈ¡¾ØÕó×î´ó×îĞ¡Öµ
+# è·å–çŸ©é˜µæœ€å¤§æœ€å°å€¼
 def minmax(data):
     data_min = data.min(axis=0)
     data_min = data_min.reshape(data_min.shape[0],1)
@@ -41,7 +41,7 @@ class Nure():
         self.__layer = neural_num.shape[1]
         self.__transfer_func = ones((1, self.__layer), dtype = 'O')
         for i in range(self.__layer):
-            self.__transfer_func[0][i] = logsig #¼¤»îº¯Êı¶¼Îªtansig
+            self.__transfer_func[0][i] = logsig #æ¿€æ´»å‡½æ•°éƒ½ä¸ºtansig
         self.__train_func = traingdm
         arg_num = 2
         for arg in arg_list: 
@@ -67,7 +67,7 @@ class Nure():
         Y = self.__transfer_func[0][1](dot(self.H, self.W2))
         return Y
 
-    def train_once(self, X, D): # µ¥´ÎÑµÁ·
+    def train_once(self, X, D): # å•æ¬¡è®­ç»ƒ
         temp = -1 * ones((X.shape[0],1))
         X = hstack([X, temp])
         H = self.__transfer_func[0][0](dot(X, self.W1))
@@ -81,7 +81,7 @@ class Nure():
         E = dot(E, temp)
         self.W1 += self.learn_speed * X.T.dot(E)
     
-    def train(self, X, D): # ÑµÁ·ÊäÈëÑù±¾
+    def train(self, X, D): # è®­ç»ƒè¾“å…¥æ ·æœ¬
         for i in range(self.train_num):
             for j in range(X.shape[0]):
                 self.train_once(array([X[j]]), array([D[j]]))
@@ -102,8 +102,8 @@ NN.train(P, T)
 
 P_test = array([linspace(-10, 10, 100)]).T
 Y_test = NN.think(P_test)
-# »æÖÆ²âÊÔÊı¾İ
+# ç»˜åˆ¶æµ‹è¯•æ•°æ®
 plt.plot(P_test.T[0], Y_test.T[0])
-# »æÖÆÑµÁ·Ñù±¾
+# ç»˜åˆ¶è®­ç»ƒæ ·æœ¬
 plt.scatter(P.T[0], T.T[0], color = 'red', marker = '+')
 plt.show()
